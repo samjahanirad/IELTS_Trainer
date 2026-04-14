@@ -1,0 +1,406 @@
+{
+  "task1": [
+    {
+      "id": "t1_1",
+      "task": 1,
+      "question": "The chart below shows the percentage of adults of different age groups in the UK who used the Internet everyday from 2003 to 2006. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_2",
+      "task": 1,
+      "question": "The chart below shows the percentage of the whole world population in four countries from 1950 to 2000, with projections till 2050. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_3",
+      "task": 1,
+      "question": "The chart below shows the expenditure on three categories among different age groups of residents in the UK in 2004. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_4",
+      "task": 1,
+      "question": "The charts below show the number of working hours per week, in the industrial sector, in four European countries in 2002. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_5",
+      "task": 1,
+      "question": "The chart below shows the aid from six developed countries to developing countries from 2008 to 2010. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_6",
+      "task": 1,
+      "question": "The graph below shows the information on waste disposal in a European country from 2005 to 2008. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_7",
+      "task": 1,
+      "question": "The chart below gives information about the growth of urban population in certain parts of the world including the prediction of the future. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_8",
+      "task": 1,
+      "question": "The graph below shows the changes in the places where people used to surf the Internet in the years 1998, 2000, 2002 and 2004. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_9",
+      "task": 1,
+      "question": "The charts below show the percentages of male and female students getting top grades in 1996 and 2000. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_10",
+      "task": 1,
+      "question": "The graph below shows the average class size in six countries and compares it with the world average class size in 2006. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_11",
+      "task": 1,
+      "question": "The chart below shows information about the favourite subjects of 60 students from two schools, School A and School B. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_12",
+      "task": 1,
+      "question": "The graph below shows four categories of citrus fruits and the top three countries to which these were exported in 2012. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_13",
+      "task": 1,
+      "question": "The graphs below show the average retirement age for men and women in 2004 and 2008 in six different countries. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_14",
+      "task": 1,
+      "question": "The chart shows information relating to people within a 15 minute drive of a service in a particular region in the UK. It also compares people living in urban areas and people living in rural areas. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_15",
+      "task": 1,
+      "question": "The graph below shows the result of a survey of young people in four European countries on the most effective solution to global warming. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_16",
+      "task": 1,
+      "question": "The graph below shows the way in which men and women used the internet in Canada in 2000. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_17",
+      "task": 1,
+      "question": "The graph below shows the percentage of dependents in 2000 and the predicted figures in 2050 in five countries and also gives the world average. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_18",
+      "task": 1,
+      "question": "The graph below shows the percentage of adults according to age and gender who do not do any physical activity in Australia. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_19",
+      "task": 1,
+      "question": "The graph below shows the number of trips made by children in one country to travel to and from school in 1990 and 2010 using various modes of transport. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_20",
+      "task": 1,
+      "question": "The bar chart below shows the average hours of housework done by women (unemployed, part-time employed and full-time employed) and full-time working men. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_21",
+      "task": 1,
+      "question": "The graph below shows the cinema attendance of people on different days of the week in 2003, 2005 and 2007. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_22",
+      "task": 1,
+      "question": "The graph below shows the average calorie intake per person in eight countries in 2003. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_23",
+      "task": 1,
+      "question": "The bar graph below outlines literacy rates for a number of nations in 2004. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_24",
+      "task": 1,
+      "question": "The graph below shows the global sales (in billions of dollars) of different types of digital games between 2000 and 2006. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_25",
+      "task": 1,
+      "question": "The graph below shows the three different kinds of emission sources (oil, coal and gas) of greenhouse gas in the UK. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_26",
+      "task": 1,
+      "question": "The graph below shows the participation of Australian children in sports outside school hours in 2014. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_27",
+      "task": 1,
+      "question": "The graph below shows the sales of children's books, adult fiction and educational books between 2002 and 2006 in one country. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_28",
+      "task": 1,
+      "question": "The line graph below shows the population size, birth rate and the death rate of England and Wales from 1700 to 2000. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_29",
+      "task": 1,
+      "question": "The graph below shows the number of overseas visitors who came to the UK for different purposes between 1989 and 2009. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    },
+    {
+      "id": "t1_30",
+      "task": 1,
+      "question": "The graph below shows the spending on research into renewable sources of energy in four countries between 1975 and 2000. Summarise the information by selecting and reporting the main features, and make comparisons where relevant."
+    }
+  ],
+  "task2": [
+    {
+      "id": "t2_1",
+      "task": 2,
+      "question": "Children are facing more pressures nowadays from academic, social and commercial perspectives. What are the causes of these pressures and what measures should be taken to reduce them?"
+    },
+    {
+      "id": "t2_2",
+      "task": 2,
+      "question": "Some people believe they should keep all the money they have earned and should not pay tax to the state. Do you agree or disagree?"
+    },
+    {
+      "id": "t2_3",
+      "task": 2,
+      "question": "Some people think that global traditions are destroyed when they are targeted at tourists. Others think that tourism is the only way to save traditions. Discuss both views and give your opinion."
+    },
+    {
+      "id": "t2_4",
+      "task": 2,
+      "question": "Reading stories from a book is better for children than watching TV or playing computer games. Do you agree or disagree?"
+    },
+    {
+      "id": "t2_5",
+      "task": 2,
+      "question": "Children today have more freedom than in the past. Is this a positive or a negative development?"
+    },
+    {
+      "id": "t2_6",
+      "task": 2,
+      "question": "Many goods are transported for long distances. Do the advantages of this outweigh the disadvantages?"
+    },
+    {
+      "id": "t2_7",
+      "task": 2,
+      "question": "The only way to protect the environment is at an international level. Do you agree or disagree?"
+    },
+    {
+      "id": "t2_8",
+      "task": 2,
+      "question": "Advertising has an increasing effect on our lives. Do the positive effects of advertising outweigh the negative effects?"
+    },
+    {
+      "id": "t2_9",
+      "task": 2,
+      "question": "Today there is an increase in anti-social behaviour and a lack of respect for others. What are the causes of this problem and what measures can be taken to address it?"
+    },
+    {
+      "id": "t2_10",
+      "task": 2,
+      "question": "Interviews form the basic selection criteria for most large companies. However, some people think that interview is not a reliable method of choosing whom to employ and there are other better methods. To what extent do you agree or disagree?"
+    },
+    {
+      "id": "t2_11",
+      "task": 2,
+      "question": "In some countries, fast food restaurants and supermarkets give money to schools to promote their products. Do you think this is a positive or negative development?"
+    },
+    {
+      "id": "t2_12",
+      "task": 2,
+      "question": "Some people believe that young people know about international pop and movie stars but know very little about famous historical people from their own country. Why is this? How can more interest be created in young people to gain knowledge about their own famous historical figures?"
+    },
+    {
+      "id": "t2_13",
+      "task": 2,
+      "question": "Environmental problems such as pollution and climatic variations are increasing nowadays. Governments have taken some measures at a global level, but they have found only few solutions. Why is this so? How can this problem be solved?"
+    },
+    {
+      "id": "t2_14",
+      "task": 2,
+      "question": "A lot of people in college are doing academic study. Some believe we should encourage them to learn vocational skills instead (like plumbers and electricians). Do you agree or disagree?"
+    },
+    {
+      "id": "t2_15",
+      "task": 2,
+      "question": "In most societies, the role of mother and father differs. What are the causes of this difference? What will parental roles be like in the future?"
+    },
+    {
+      "id": "t2_16",
+      "task": 2,
+      "question": "If children behave badly, should their parents take responsibility and also be punished? State your answer and give your reasons."
+    },
+    {
+      "id": "t2_17",
+      "task": 2,
+      "question": "Some people say that industrial growth is necessary to solve poverty, but others argue that industrial growth is creating environmental problems and it should be stopped. Discuss both views and give your opinion."
+    },
+    {
+      "id": "t2_18",
+      "task": 2,
+      "question": "Many people use distance-learning programs to study at home, but some people think that it cannot bring the same benefits as attending college or university. To what extent do you agree or disagree?"
+    },
+    {
+      "id": "t2_19",
+      "task": 2,
+      "question": "The government needs to spend money to encourage the development of sport and art for school students, rather than to support professional sports and art events. Do you agree or disagree?"
+    },
+    {
+      "id": "t2_20",
+      "task": 2,
+      "question": "Now machines are very complex and a lot of difficult work is automated. Does machine automation have more advantages than disadvantages?"
+    },
+    {
+      "id": "t2_21",
+      "task": 2,
+      "question": "Newspapers have influenced people's ideas and opinions. What are the reasons for this? Is this a positive or a negative situation?"
+    },
+    {
+      "id": "t2_22",
+      "task": 2,
+      "question": "Economic growth in developing and developed countries is making people richer. However, research indicates that people in developing countries are happier than people in developed countries. What is your opinion on this and what lessons can we learn from it?"
+    },
+    {
+      "id": "t2_23",
+      "task": 2,
+      "question": "Get rid of old things to acquire the newest fashion and the latest technology. Do the disadvantages of a throwaway society outweigh the advantages?"
+    },
+    {
+      "id": "t2_24",
+      "task": 2,
+      "question": "Once children start school, teachers have more influence than parents on their intellectual and social development. To what extent do you agree or disagree?"
+    },
+    {
+      "id": "t2_25",
+      "task": 2,
+      "question": "News media nowadays have influenced people's lives in negative ways. To what extent do you agree or disagree?"
+    },
+    {
+      "id": "t2_26",
+      "task": 2,
+      "question": "Differences between countries are barely evident these days. Everyone is wearing the same clothes and watching the same TV programs. Do you think this is a positive or a negative development?"
+    },
+    {
+      "id": "t2_27",
+      "task": 2,
+      "question": "Air travel should be restricted because it causes pollution and uses up the world's fuel resources. To what extent do you agree or disagree?"
+    },
+    {
+      "id": "t2_28",
+      "task": 2,
+      "question": "Some students take one year off between finishing school and starting university. Do the advantages of this gap year outweigh the disadvantages?"
+    },
+    {
+      "id": "t2_29",
+      "task": 2,
+      "question": "Every human being can create art (e.g. painting), or only people born with the ability can create art. Discuss both views and give your opinion."
+    },
+    {
+      "id": "t2_30",
+      "task": 2,
+      "question": "Is economic development necessary to reduce poverty, or should economic growth be stopped as it is damaging the environment? Discuss both sides and give your opinion."
+    },
+    {
+      "id": "t2_31",
+      "task": 2,
+      "question": "Good relationships between different countries are becoming more important to solve global problems. Do you agree or disagree?"
+    },
+    {
+      "id": "t2_32",
+      "task": 2,
+      "question": "Playing computer games is bad for children, whereas others say that it has positive effects. Discuss both sides and give your opinion."
+    },
+    {
+      "id": "t2_33",
+      "task": 2,
+      "question": "Fewer people today write by hand. What are the reasons for this? Is this a positive or a negative development?"
+    },
+    {
+      "id": "t2_34",
+      "task": 2,
+      "question": "Students today get information online, so libraries are not necessary. To what extent do you agree or disagree?"
+    },
+    {
+      "id": "t2_35",
+      "task": 2,
+      "question": "Teachers should teach students to judge what is right and wrong, rather than only teaching academic subjects. Discuss both views and give your opinion."
+    },
+    {
+      "id": "t2_36",
+      "task": 2,
+      "question": "In some countries, celebrities complain about the way media publicizes their private lives. Some people say that they should accept it as part of their fame. Do you agree or disagree?"
+    },
+    {
+      "id": "t2_37",
+      "task": 2,
+      "question": "Some people think governments should focus on reducing environmental pollution and housing problems to help people prevent illness and disease. To what extent do you agree or disagree?"
+    },
+    {
+      "id": "t2_38",
+      "task": 2,
+      "question": "Most employers nowadays put increasing emphasis on social skills. Some people believe that social skills are important in addition to good qualifications for job success. To what extent do you agree or disagree?"
+    },
+    {
+      "id": "t2_39",
+      "task": 2,
+      "question": "Recent advancements in technology have made watching TV so realistic that people no longer feel the need to attend live performances such as shows or concerts. To what extent do you agree or disagree?"
+    },
+    {
+      "id": "t2_40",
+      "task": 2,
+      "question": "Some people think that schools should separate students according to their academic abilities, while others believe that students with different abilities should study together. Discuss both views and give your opinion."
+    },
+    {
+      "id": "t2_41",
+      "task": 2,
+      "question": "Human activities have negative effects on plant and animal species. Some people think it is too late to do anything about this problem, while others believe that effective measures can still be taken. Discuss both views and give your opinion."
+    },
+    {
+      "id": "t2_42",
+      "task": 2,
+      "question": "More and more people are using computers and other electronic devices to access information. So, the printing of books, magazines and newspapers should not be done. Do you agree or disagree?"
+    },
+    {
+      "id": "t2_43",
+      "task": 2,
+      "question": "Governments should spend money on building train and subway lines to reduce traffic congestion, rather than building more and wider roads. Discuss both views and give your opinion."
+    },
+    {
+      "id": "t2_44",
+      "task": 2,
+      "question": "In many countries, women are allowed to take maternity leave during the first months after the birth of their child. Do the advantages of this policy outweigh the disadvantages?"
+    },
+    {
+      "id": "t2_45",
+      "task": 2,
+      "question": "The main purpose of schools is to turn children into good citizens and workers, rather than to benefit them as individuals. Do you agree or disagree?"
+    },
+    {
+      "id": "t2_46",
+      "task": 2,
+      "question": "In the modern world, it is no longer necessary to use animals for food or to use animal products such as clothing and medicines. Do you agree or disagree?"
+    },
+    {
+      "id": "t2_47",
+      "task": 2,
+      "question": "Healthcare should be free for everyone, or people should pay for their own medical costs. Discuss both views and give your opinion."
+    },
+    {
+      "id": "t2_48",
+      "task": 2,
+      "question": "In many cities and towns, the high volume of road traffic is a major problem. What are the causes of this problem and what solutions can be suggested?"
+    },
+    {
+      "id": "t2_49",
+      "task": 2,
+      "question": "Some people think job satisfaction is more important than job security, while others think having a permanent job is more important. Discuss both views and give your opinion."
+    },
+    {
+      "id": "t2_50",
+      "task": 2,
+      "question": "People aim to achieve a balance between their work and personal lives, but few people achieve it. What are the causes of this problem and what solutions can be suggested?"
+    }
+  ]
+}

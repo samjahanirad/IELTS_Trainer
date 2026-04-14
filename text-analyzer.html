@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prose Analyzer</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #e8e0d0;
+    --paper-dark: #d4c8b0;
+    --ink: #2a1f14;
+    --ink-light: #5a4a38;
+    --line: rgba(80, 100, 160, 0.35);
+    --margin: rgba(180, 60, 60, 0.7);
+    --red: #e53935;
+    --yellow: #f9a825;
+    --green: #388e3c;
+    --blue: #1565c0;
+    --red-bg: rgba(229, 57, 53, 0.18);
+    --yellow-bg: rgba(249, 168, 37, 0.22);
+    --green-bg: rgba(56, 142, 60, 0.18);
+    --blue-bg: rgba(21, 101, 192, 0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #b5a898;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px;
+    font-family: 'Courier Prime', monospace;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(100,80,60,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(80,60,40,0.2) 0%, transparent 50%);
+  }
+
+  .page-wrapper {
+    width: 100%;
+    max-width: 760px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .header h1 {
+    font-family: 'Special Elite', cursive;
+    font-size: 2.2rem;
+    color: #f5efe6;
+    letter-spacing: 0.08em;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+  }
+
+  .header p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: rgba(245,239,230,0.75);
+    margin-top: 4px;
+  }
+
+  /* NOTEBOOK */
+  .notebook {
+    background: var(--paper);
+    border-radius: 2px 4px 4px 2px;
+    box-shadow:
+      -3px 0 0 #c8b89a,
+      4px 4px 0 #a89070,
+      6px 6px 0 #987860,
+      8px 8px 12px rgba(0,0,0,0.35),
+      inset 0 0 80px rgba(150,120,80,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Paper texture noise */
+  .notebook::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  /* Red margin line */
+  .notebook::after {
+    content: '';
+    position: absolute;
+    left: 64px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--margin);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Horizontal lines */
+  .lined-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 31px,
+      var(--line) 31px,
+      var(--line) 32px
+    );
+    background-position: 0 48px;
+  }
+
+  .notebook-inner {
+    position: relative;
+    z-index: 3;
+    padding: 20px 28px 20px 82px;
+  }
+
+  /* EDITABLE TEXT AREA */
+  .text-display {
+    min-height: 420px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 1rem;
+    line-height: 32px;
+    color: var(--ink);
+    outline: none;
+    caret-color: var(--ink);
+    word-break: break-word;
+    white-space: pre-wrap;
+    position: relative;
+    padding-top: 16px;
+  }
+
+  .text-display:empty::before {
+    content: attr(data-placeholder);
+    color: var(--ink-light);
+    opacity: 0.45;
+    pointer-events: none;
+    font-style: italic;
+  }
+
+  /* Highlight styles */
+  mark.h-red    { background: var(--red-bg);    color: var(--red);    border-bottom: 2px solid var(--red);    border-radius: 2px; padding: 0 1px; }
+  mark.h-yellow { background: var(--yellow-bg); color: #7a5800;       border-bottom: 2px solid var(--yellow); border-radius: 2px; padding: 0 1px; }
+  mark.h-green  { background: var(--green-bg);  color: var(--green);  border-bottom: 2px solid var(--green);  border-radius: 2px; padding: 0 1px; }
+  mark.h-blue   { background: var(--blue-bg);   color: var(--blue);   border-bottom: 2px solid var(--blue);   border-radius: 2px; padding: 0 1px; }
+
+  /* DIVIDER */
+  .divider {
+    height: 2px;
+    background: repeating-linear-gradient(
+      to right,
+      var(--margin) 0, var(--margin) 14px,
+      transparent 14px, transparent 20px
+    );
+    margin: 0 0 0 0;
+    opacity: 0.6;
+  }
+
+  /* ANALYZER PANEL */
+  .analyzer-panel {
+    background: rgba(180,160,130,0.18);
+    border-top: 1px solid rgba(130,110,80,0.3);
+    padding: 18px 28px 22px 82px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .analyzer-title {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 14px;
+    opacity: 0.7;
+  }
+
+  /* Color buttons */
+  .color-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .color-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px 6px 10px;
+    border-radius: 3px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.15s ease;
+    background: rgba(255,255,255,0.35);
+    position: relative;
+  }
+
+  .color-btn .dot {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .color-btn.red   { color: var(--red);    border-color: var(--red); }
+  .color-btn.yellow{ color: #7a5800;       border-color: var(--yellow); }
+  .color-btn.green { color: var(--green);  border-color: var(--green); }
+  .color-btn.blue  { color: var(--blue);   border-color: var(--blue); }
+
+  .color-btn.red   .dot { background: var(--red); }
+  .color-btn.yellow .dot{ background: var(--yellow); }
+  .color-btn.green  .dot{ background: var(--green); }
+  .color-btn.blue   .dot{ background: var(--blue); }
+
+  .color-btn.active.red   { background: var(--red-bg); }
+  .color-btn.active.yellow{ background: var(--yellow-bg); }
+  .color-btn.active.green { background: var(--green-bg); }
+  .color-btn.active.blue  { background: var(--blue-bg); }
+
+  .color-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+
+  /* Stats row */
+  .stats-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Caveat', cursive;
+    font-size: 0.95rem;
+    color: var(--ink-light);
+  }
+
+  .stat-pill .bar {
+    height: 8px;
+    border-radius: 4px;
+    min-width: 30px;
+    transition: width 0.4s ease;
+  }
+
+  .stat-pill.red    .bar { background: var(--red); }
+  .stat-pill.yellow .bar { background: var(--yellow); }
+  .stat-pill.green  .bar { background: var(--green); }
+  .stat-pill.blue   .bar { background: var(--blue); }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-top: 14px;
+    border-top: 1px dashed rgba(130,110,80,0.3);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-family: 'Caveat', cursive;
+    font-size: 0.9rem;
+    color: var(--ink-light);
+    max-width: 160px;
+  }
+
+  .legend-item .swatch {
+    width: 13px; height: 13px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .legend-item.red    .swatch { background: var(--red-bg); border: 1.5px solid var(--red); }
+  .legend-item.yellow .swatch { background: var(--yellow-bg); border: 1.5px solid var(--yellow); }
+  .legend-item.green  .swatch { background: var(--green-bg); border: 1.5px solid var(--green); }
+  .legend-item.blue   .swatch { background: var(--blue-bg); border: 1.5px solid var(--blue); }
+
+  /* Action buttons */
+  .action-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .action-btn {
+    padding: 7px 18px;
+    border: 1.5px solid rgba(130,110,80,0.5);
+    border-radius: 3px;
+    background: rgba(255,255,255,0.3);
+    font-family: 'Special Elite', cursive;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .action-btn:hover {
+    background: rgba(255,255,255,0.55);
+    color: var(--ink);
+    border-color: rgba(100,80,50,0.7);
+  }
+
+  .action-btn.primary {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .action-btn.primary:hover {
+    background: var(--ink-light);
+  }
+
+  /* Mode indicator */
+  .mode-indicator {
+    font-family: 'Caveat', cursive;
+    font-size: 0.88rem;
+    color: var(--ink-light);
+    opacity: 0.7;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .mode-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--ink-light);
+    transition: background 0.2s;
+  }
+
+  /* Top meta strip */
+  .meta-strip {
+    padding: 12px 28px 10px 82px;
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid rgba(130,110,80,0.2);
+  }
+
+  .meta-strip span {
+    font-family: 'Caveat', cursive;
+    font-size: 0.88rem;
+    color: var(--ink-light);
+    opacity: 0.6;
+  }
+
+  .word-count-badge {
+    background: rgba(0,0,0,0.07);
+    border-radius: 10px;
+    padding: 1px 9px;
+    font-size: 0.8rem !important;
+    opacity: 1 !important;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="header">
+    <h1>Prose Analyzer</h1>
+    <p>Select text, choose a color, mark your annotations</p>
+  </div>
+
+  <div class="notebook">
+    <div class="lined-bg"></div>
+
+    <!-- Meta strip -->
+    <div class="meta-strip">
+      <span>Analysis Draft</span>
+      <span>—</span>
+      <span id="wordCount" class="word-count-badge">0 words</span>
+      <span id="charCount">0 chars</span>
+    </div>
+
+    <!-- Main text area -->
+    <div class="notebook-inner">
+      <div
+        id="textArea"
+        class="text-display"
+        contenteditable="true"
+        data-placeholder="Type or paste your text here… then select any phrase and click a color below to annotate it."
+      ></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Analyzer panel -->
+    <div class="analyzer-panel">
+      <div class="analyzer-title">✦ Text Analyzer</div>
+
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+        <div class="color-tabs">
+          <button class="color-btn red"    onclick="applyColor('red')"   title="Important / Critical">
+            <span class="dot"></span> Important
+          </button>
+          <button class="color-btn yellow" onclick="applyColor('yellow')" title="Note / Caution">
+            <span class="dot"></span> Note
+          </button>
+          <button class="color-btn green"  onclick="applyColor('green')"  title="Positive / Confirmed">
+            <span class="dot"></span> Positive
+          </button>
+          <button class="color-btn blue"   onclick="applyColor('blue')"   title="Definition / Reference">
+            <span class="dot"></span> Reference
+          </button>
+        </div>
+        <div class="mode-indicator">
+          <span class="mode-dot" id="modeDot"></span>
+          <span id="modeLabel">Select text to annotate</span>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-pill red">
+          <span class="bar" id="barRed" style="width:0px"></span>
+          <span id="countRed">0</span> important
+        </div>
+        <div class="stat-pill yellow">
+          <span class="bar" id="barYellow" style="width:0px"></span>
+          <span id="countYellow">0</span> notes
+        </div>
+        <div class="stat-pill green">
+          <span class="bar" id="barGreen" style="width:0px"></span>
+          <span id="countGreen">0</span> positive
+        </div>
+        <div class="stat-pill blue">
+          <span class="bar" id="barBlue" style="width:0px"></span>
+          <span id="countBlue">0</span> reference
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="action-row">
+        <button class="action-btn" onclick="clearHighlights()">Clear All</button>
+        <button class="action-btn" onclick="loadExample()">Load Example</button>
+      </div>
+
+      <!-- Legend -->
+      <div class="legend" style="margin-top:14px;">
+        <div class="legend-item red">
+          <div class="swatch"></div>
+          <span>Red — critical points, warnings, errors</span>
+        </div>
+        <div class="legend-item yellow">
+          <div class="swatch"></div>
+          <span>Yellow — cautions, side notes, caveats</span>
+        </div>
+        <div class="legend-item green">
+          <div class="swatch"></div>
+          <span>Green — confirmed facts, positives</span>
+        </div>
+        <div class="legend-item blue">
+          <div class="swatch"></div>
+          <span>Blue — definitions, references, links</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const EXAMPLE_TEXT = `Climate change is one of the most urgent crises facing humanity today. Scientists have confirmed with over 97% consensus that global temperatures are rising due to human activity — primarily the burning of fossil fuels.
+
+The good news is that renewable energy adoption has accelerated dramatically in recent years. Solar and wind power now represent the cheapest sources of electricity in history, making the transition economically viable.
+
+However, we must act immediately. The IPCC report warns that without significant emission cuts by 2030, we risk crossing irreversible tipping points. Nations must not treat this as a distant problem.
+
+The Paris Agreement, signed by 196 countries, established a framework to limit warming to 1.5°C above pre-industrial levels. This benchmark is considered critical to avoiding the worst consequences.`;
+
+// Encoded annotation markers
+const COLOR_MAP = {
+  red:    'h-red',
+  yellow: 'h-yellow',
+  green:  'h-green',
+  blue:   'h-blue'
+};
+
+function applyColor(color) {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return;
+
+  const range = sel.getRangeAt(0);
+  const textArea = document.getElementById('textArea');
+  if (!textArea.contains(range.commonAncestorContainer)) return;
+
+  // Wrap selected text in a mark
+  const mark = document.createElement('mark');
+  mark.className = COLOR_MAP[color];
+  try {
+    range.surroundContents(mark);
+  } catch (e) {
+    // If selection spans multiple elements, extract and re-wrap
+    const fragment = range.extractContents();
+    mark.appendChild(fragment);
+    range.insertNode(mark);
+  }
+
+  sel.removeAllRanges();
+  updateStats();
+}
+
+function clearHighlights() {
+  const marks = document.querySelectorAll('#textArea mark');
+  marks.forEach(m => {
+    const parent = m.parentNode;
+    while (m.firstChild) parent.insertBefore(m.firstChild, m);
+    parent.removeChild(m);
+  });
+  updateStats();
+}
+
+function updateStats() {
+  const ta = document.getElementById('textArea');
+  const counts = { red: 0, yellow: 0, green: 0, blue: 0 };
+  ta.querySelectorAll('mark').forEach(m => {
+    if (m.className === 'h-red') counts.red++;
+    else if (m.className === 'h-yellow') counts.yellow++;
+    else if (m.className === 'h-green') counts.green++;
+    else if (m.className === 'h-blue') counts.blue++;
+  });
+
+  const max = Math.max(1, ...Object.values(counts));
+  const maxW = 80;
+
+  ['red','yellow','green','blue'].forEach(c => {
+    document.getElementById('count' + cap(c)).textContent = counts[c];
+    document.getElementById('bar' + cap(c)).style.width = (counts[c] / max * maxW) + 'px';
+  });
+
+  // Word & char count
+  const text = ta.innerText || '';
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  document.getElementById('wordCount').textContent = words + ' words';
+  document.getElementById('charCount').textContent = text.length + ' chars';
+}
+
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function loadExample() {
+  const ta = document.getElementById('textArea');
+  ta.innerHTML = '';
+  ta.innerText = EXAMPLE_TEXT;
+
+  // Auto-annotate after a tiny delay
+  setTimeout(() => {
+    autoAnnotate();
+    updateStats();
+  }, 50);
+}
+
+function autoAnnotate() {
+  const ta = document.getElementById('textArea');
+  const annotations = [
+    { phrase: 'most urgent crises facing humanity today', color: 'red' },
+    { phrase: '97% consensus', color: 'blue' },
+    { phrase: 'primarily the burning of fossil fuels', color: 'red' },
+    { phrase: 'renewable energy adoption has accelerated dramatically', color: 'green' },
+    { phrase: 'cheapest sources of electricity in history', color: 'green' },
+    { phrase: 'act immediately', color: 'red' },
+    { phrase: 'IPCC report warns', color: 'yellow' },
+    { phrase: 'irreversible tipping points', color: 'red' },
+    { phrase: 'Paris Agreement', color: 'blue' },
+    { phrase: '196 countries', color: 'blue' },
+    { phrase: '1.5°C above pre-industrial levels', color: 'yellow' },
+    { phrase: 'Solar and wind power', color: 'green' },
+  ];
+
+  function markText(node, phrase, cls) {
+    if (node.nodeType === 3) {
+      const idx = node.textContent.indexOf(phrase);
+      if (idx >= 0) {
+        const before = document.createTextNode(node.textContent.slice(0, idx));
+        const mark = document.createElement('mark');
+        mark.className = cls;
+        mark.textContent = phrase;
+        const after = document.createTextNode(node.textContent.slice(idx + phrase.length));
+        const parent = node.parentNode;
+        parent.insertBefore(before, node);
+        parent.insertBefore(mark, node);
+        parent.insertBefore(after, node);
+        parent.removeChild(node);
+        return true;
+      }
+    } else if (node.nodeType === 1 && node.nodeName !== 'MARK') {
+      for (let i = 0; i < node.childNodes.length; i++) {
+        if (markText(node.childNodes[i], phrase, cls)) return true;
+      }
+    }
+    return false;
+  }
+
+  annotations.forEach(({ phrase, color }) => {
+    markText(ta, phrase, COLOR_MAP[color]);
+  });
+}
+
+// Selection feedback
+document.getElementById('textArea').addEventListener('mouseup', () => {
+  const sel = window.getSelection();
+  const hasSelection = sel && !sel.isCollapsed;
+  const dot = document.getElementById('modeDot');
+  const label = document.getElementById('modeLabel');
+
+  if (hasSelection) {
+    dot.style.background = '#e53935';
+    label.textContent = 'Ready to annotate';
+  } else {
+    dot.style.background = '#5a4a38';
+    label.textContent = 'Select text to annotate';
+  }
+});
+
+document.getElementById('textArea').addEventListener('input', updateStats);
+
+// Load example on start
+window.addEventListener('load', () => {
+  loadExample();
+});
+</script>
+</body>
+</html>

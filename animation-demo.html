@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dramatic Text Animation — Demo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #07070f;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: system-ui, -apple-system, sans-serif;
+    gap: 36px;
+    padding: 48px 20px;
+  }
+
+  .stage {
+    width: 100%;
+    max-width: 720px;
+    min-height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 28px 32px;
+    position: relative;
+  }
+
+  #demoText {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .mode-btn {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 7px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: filter 0.15s, transform 0.1s;
+    outline: none;
+  }
+
+  .mode-btn:hover  { filter: brightness(1.15); transform: translateY(-2px); }
+  .mode-btn:active { transform: translateY(0); }
+
+  .btn-fire      { background: linear-gradient(135deg,#ff6a00,#ee0979); color: #fff; }
+  .btn-lightning { background: linear-gradient(135deg,#6a11cb,#2575fc); color: #fff; }
+  .btn-glitch    { background: linear-gradient(135deg,#0ff,#f0f); color: #000; }
+  .btn-shatter   { background: linear-gradient(135deg,#f7971e,#ffd200); color: #000; }
+  .btn-neon      { background: linear-gradient(135deg,#c42dff,#ff2d78); color: #fff; }
+
+  .options-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 28px;
+    justify-content: center;
+  }
+
+  .opt-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255,255,255,0.55);
+    font-size: 0.86rem;
+  }
+
+  .opt-group label { color: rgba(255,255,255,0.55); }
+
+  input[type=range] {
+    width: 140px;
+    accent-color: #8060c0;
+    cursor: pointer;
+  }
+
+  #speedVal {
+    color: #fff;
+    font-weight: 700;
+    min-width: 36px;
+    display: inline-block;
+  }
+
+  input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+    accent-color: #c42dff;
+    cursor: pointer;
+  }
+
+  .status {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.04em;
+    min-height: 1.2em;
+    text-align: center;
+  }
+
+  .back-link {
+    color: rgba(255,255,255,0.3);
+    text-decoration: none;
+    font-size: 0.82rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 1px;
+    transition: color 0.15s;
+  }
+
+  .back-link:hover { color: rgba(255,255,255,0.65); }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <h1 id="demoText">Dramatic Text Effects</h1>
+</div>
+
+<div class="controls">
+  <button class="mode-btn btn-fire"      onclick="run('fire')">&#x1F525; Fire Forge</button>
+  <button class="mode-btn btn-lightning" onclick="run('lightning')">&#x26A1; Lightning Strike</button>
+  <button class="mode-btn btn-glitch"    onclick="run('glitch')">&#x2593; Glitch</button>
+  <button class="mode-btn btn-shatter"   onclick="run('shatter')">&#x2736; Shatter In</button>
+  <button class="mode-btn btn-neon"      onclick="run('neon')">&#x2B22; Neon Flicker</button>
+</div>
+
+<div class="options-row">
+  <div class="opt-group">
+    <label for="speedSlider">Speed</label>
+    <input type="range" id="speedSlider" min="0.25" max="3" step="0.05" value="1" oninput="updateSpeed()">
+    <span id="speedVal">1.00&times;</span>
+  </div>
+  <div class="opt-group">
+    <input type="checkbox" id="loopToggle">
+    <label for="loopToggle">Loop (replay after 3 s)</label>
+  </div>
+</div>
+
+<div class="status" id="status">Click a mode to preview</div>
+
+<a class="back-link" href="/ielts-trainer.html">&#8592; Back to IELTS Trainer</a>
+
+<script src="dramatic-text-animation.js"></script>
+<script>
+  function updateSpeed() {
+    const v = parseFloat(document.getElementById('speedSlider').value).toFixed(2);
+    document.getElementById('speedVal').textContent = v + '\u00d7';
+  }
+
+  function run(mode) {
+    const el     = document.getElementById('demoText');
+    const speed  = parseFloat(document.getElementById('speedSlider').value);
+    const loop   = document.getElementById('loopToggle').checked;
+    const status = document.getElementById('status');
+
+    const labels = { fire:'Fire Forge', lightning:'Lightning Strike', glitch:'Glitch', shatter:'Shatter In', neon:'Neon Flicker' };
+    status.textContent = 'Running: ' + labels[mode] + '\u2026';
+
+    initDramaticText(el, mode, {
+      speedMultiplier: speed,
+      loop: loop,
+      onComplete: function () {
+        status.textContent = labels[mode] + ' complete' + (loop ? ' \u2014 looping' : '');
+      }
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How the Analyzer Works — IELTS Writing Trainer</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #e8e0d0;
+    --ink: #2a1f14;
+    --ink-light: #5a4a38;
+    --line: rgba(80, 100, 160, 0.35);
+    --margin: rgba(180, 60, 60, 0.7);
+    --red: #e53935;
+    --yellow: #f9a825;
+    --green: #388e3c;
+    --blue: #1565c0;
+    --red-bg: rgba(229, 57, 53, 0.18);
+    --yellow-bg: rgba(249, 168, 37, 0.22);
+    --green-bg: rgba(56, 142, 60, 0.18);
+    --blue-bg: rgba(21, 101, 192, 0.18);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #b5a898;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px;
+    font-family: 'Courier Prime', monospace;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(100,80,60,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(80,60,40,0.2) 0%, transparent 50%);
+  }
+
+  .page-wrapper { width: 100%; max-width: 780px; }
+
+  .header { text-align: center; margin-bottom: 24px; }
+
+  .header h1 {
+    font-family: 'Special Elite', cursive;
+    font-size: 2.2rem;
+    color: #f5efe6;
+    letter-spacing: 0.08em;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+  }
+
+  .header p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: rgba(245,239,230,0.75);
+    margin-top: 4px;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: rgba(245,239,230,0.7);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(245,239,230,0.35);
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: #f5efe6; }
+
+  /* NOTEBOOK */
+  .notebook {
+    background: var(--paper);
+    border-radius: 2px 4px 4px 2px;
+    box-shadow:
+      -3px 0 0 #c8b89a,
+      4px 4px 0 #a89070,
+      6px 6px 0 #987860,
+      8px 8px 12px rgba(0,0,0,0.35),
+      inset 0 0 80px rgba(150,120,80,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .notebook::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  .notebook::after {
+    content: '';
+    position: absolute;
+    left: 64px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--margin);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .lined-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 31px,
+      var(--line) 31px,
+      var(--line) 32px
+    );
+    background-position: 0 48px;
+  }
+
+  .notebook-inner {
+    position: relative;
+    z-index: 3;
+    padding: 28px 36px 36px 82px;
+  }
+
+  /* SECTION HEADINGS */
+  .section-title {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    opacity: 0.75;
+    margin-top: 32px;
+    margin-bottom: 12px;
+  }
+
+  .section-title:first-child { margin-top: 0; }
+
+  .divider-dash {
+    height: 1px;
+    background: repeating-linear-gradient(
+      to right,
+      rgba(180,60,60,0.4) 0, rgba(180,60,60,0.4) 10px,
+      transparent 10px, transparent 16px
+    );
+    margin-bottom: 18px;
+  }
+
+  /* BODY TEXT */
+  p {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.95rem;
+    line-height: 32px;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  /* COLOR BLOCKS */
+  .color-block {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border-radius: 4px;
+    border-left: 4px solid transparent;
+  }
+
+  .color-block.green  { background: var(--green-bg);  border-color: var(--green); }
+  .color-block.blue   { background: var(--blue-bg);   border-color: var(--blue); }
+  .color-block.yellow { background: var(--yellow-bg); border-color: var(--yellow); }
+  .color-block.red    { background: var(--red-bg);    border-color: var(--red); }
+
+  .color-block-label {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    min-width: 72px;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .color-block.green  .color-block-label { color: var(--green); }
+  .color-block.blue   .color-block-label { color: var(--blue); }
+  .color-block.yellow .color-block-label { color: #7a5800; }
+  .color-block.red    .color-block-label { color: var(--red); }
+
+  .color-block-body {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+
+  .color-block-body strong {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .examples {
+    font-style: italic;
+    opacity: 0.7;
+    font-size: 0.83rem;
+  }
+
+  /* STEPS */
+  .steps { counter-reset: step; margin-bottom: 8px; }
+
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .step-num {
+    counter-increment: step;
+    font-family: 'Special Elite', cursive;
+    font-size: 1.1rem;
+    color: var(--ink-light);
+    opacity: 0.5;
+    min-width: 22px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .step-num::before { content: counter(step) "."; }
+
+  .step-body {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+
+  .step-body strong { font-weight: 700; }
+
+  /* RULE LIST */
+  .rules {
+    list-style: none;
+    margin-bottom: 10px;
+  }
+
+  .rules li {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--ink);
+    padding: 5px 0 5px 22px;
+    position: relative;
+    border-bottom: 1px solid rgba(130,110,80,0.12);
+  }
+
+  .rules li:last-child { border-bottom: none; }
+
+  .rules li::before {
+    content: '&#10022;';
+    position: absolute;
+    left: 0;
+    color: var(--ink-light);
+    opacity: 0.4;
+    font-size: 0.7rem;
+    top: 8px;
+  }
+
+  /* INLINE MARK */
+  mark.h-green  { background: var(--green-bg);  color: var(--green);  border-bottom: 2px solid var(--green);  border-radius: 2px; padding: 0 2px; }
+  mark.h-blue   { background: var(--blue-bg);   color: var(--blue);   border-bottom: 2px solid var(--blue);   border-radius: 2px; padding: 0 2px; }
+  mark.h-yellow { background: var(--yellow-bg); color: #7a5800;       border-bottom: 2px solid var(--yellow); border-radius: 2px; padding: 0 2px; }
+  mark.h-red    { background: var(--red-bg);    color: var(--red);    border-bottom: 2px solid var(--red);    border-radius: 2px; padding: 0 2px; }
+
+  /* NOTE BOX */
+  .note-box {
+    background: rgba(255,255,255,0.3);
+    border: 1px solid rgba(130,110,80,0.3);
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-top: 20px;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="header">
+    <h1>How the Analyzer Works</h1>
+    <p>A guide to the AI feedback system</p>
+    <a class="back-link" href="/ielts-trainer.html">&#8592; Back to Trainer</a>
+  </div>
+
+  <div class="notebook">
+    <div class="lined-bg"></div>
+    <div class="notebook-inner">
+
+      <!-- OVERVIEW -->
+      <div class="section-title">&#10022; Overview</div>
+      <div class="divider-dash"></div>
+      <p>
+        When you click <strong>Analyze with AI</strong>, your writing is sent to Claude (an AI model by Anthropic).
+        Claude reads your text as an expert IELTS examiner and identifies specific words and phrases worth highlighting —
+        things that directly affect your band score.
+      </p>
+      <p>
+        Results appear as colored underlines directly inside your text. Hover over any highlight to see the reason.
+      </p>
+
+      <!-- COLOR SYSTEM -->
+      <div class="section-title" style="margin-top:28px;">&#10022; Color System</div>
+      <div class="divider-dash"></div>
+
+      <div class="color-block green">
+        <span class="color-block-label">Green</span>
+        <div class="color-block-body">
+          <strong>High-Value Vocabulary</strong>
+          Advanced, academic-register words that directly raise your Lexical Resource score.
+          These are reusable across many Task 1 and Task 2 responses.
+          <br><span class="examples">e.g. <mark class="h-green">accounted for</mark>, <mark class="h-green">peaked</mark>, <mark class="h-green">fluctuated</mark>, <mark class="h-green">marginally</mark>, <mark class="h-green">surpassed</mark></span>
+        </div>
+      </div>
+
+      <div class="color-block blue">
+        <span class="color-block-label">Blue</span>
+        <div class="color-block-body">
+          <strong>Structure &amp; Grammar Tools</strong>
+          Sentence-building devices that show grammatical range — relative clauses, approximation phrases,
+          sequence markers, and framing expressions.
+          <br><span class="examples">e.g. <mark class="h-blue">in terms of</mark>, <mark class="h-blue">just over</mark>, <mark class="h-blue">after which</mark>, <mark class="h-blue">with regard to</mark></span>
+        </div>
+      </div>
+
+      <div class="color-block yellow">
+        <span class="color-block-label">Yellow</span>
+        <div class="color-block-body">
+          <strong>IELTS Scoring Phrases</strong>
+          Task-specific phrases that examiners actively reward. For Task 1 these relate to data description;
+          for Task 2 they relate to argumentation and essay structure.
+          <br><span class="examples">e.g. <mark class="h-yellow">overall it can be seen that</mark>, <mark class="h-yellow">reached a peak</mark>, <mark class="h-yellow">remained relatively stable</mark></span>
+        </div>
+      </div>
+
+      <div class="color-block red">
+        <span class="color-block-label">Red</span>
+        <div class="color-block-body">
+          <strong>Mistakes &amp; Weak Usage</strong>
+          Errors that lower your score — wrong tense, informal or vague words, grammatical mistakes,
+          or phrases copied verbatim from the question prompt.
+          <br><span class="examples">e.g. informal words, incorrect verb tense, copied question phrases</span>
+        </div>
+      </div>
+
+      <!-- HOW TO USE -->
+      <div class="section-title">&#10022; How to Use</div>
+      <div class="divider-dash"></div>
+
+      <div class="steps">
+        <div class="step">
+          <span class="step-num"></span>
+          <div class="step-body">
+            <strong>Select Task 1 or Task 2</strong> using the toggle in the top-right of the notebook.
+            This changes the phrases the AI looks for — Task 1 focuses on data description language,
+            Task 2 on argumentation and essay structure.
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num"></span>
+          <div class="step-body">
+            <strong>(Task 1 only)</strong> Paste the question into the <em>Task Question</em> box and
+            configure the chart so you can refer to both while writing.
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num"></span>
+          <div class="step-body">
+            <strong>Paste or type your response</strong> in the lined writing area.
+            The word and character count update live.
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num"></span>
+          <div class="step-body">
+            <strong>Click Analyze with AI.</strong> The AI reads your full response and returns a list of
+            annotations. Each annotation has an exact phrase, a color, and a brief reason.
+            These are applied as highlights directly in the text.
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num"></span>
+          <div class="step-body">
+            <strong>Hover over any highlight</strong> to read the examiner's note explaining why that
+            phrase was flagged.
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num"></span>
+          <div class="step-body">
+            <strong>Use the manual color buttons</strong> to mark additional selections yourself —
+            select text first, then click a color. Useful for practicing self-assessment.
+          </div>
+        </div>
+      </div>
+
+      <!-- AI RULES -->
+      <div class="section-title">&#10022; What the AI Prioritizes</div>
+      <div class="divider-dash"></div>
+
+      <ul class="rules">
+        <li>Green (vocabulary) is the highest-priority category — it has the biggest impact on band score</li>
+        <li>Common or obvious words are never highlighted (e.g. "shows", "increases", "high", "both")</li>
+        <li>Only genuinely advanced or formal vocabulary is marked green</li>
+        <li>Per sentence limit: at most 2 green + 1 blue + 1 yellow annotations; red only for real errors</li>
+        <li>Red is only applied for clear, specific errors — not stylistic preferences</li>
+        <li>Every highlighted phrase must appear verbatim in your text — no paraphrasing or invented phrases</li>
+        <li>The same phrase is never annotated twice</li>
+        <li>Phrases copied directly from the question prompt are flagged red</li>
+      </ul>
+
+      <!-- CHART EDITOR -->
+      <div class="section-title">&#10022; Chart Editor (Task 1)</div>
+      <div class="divider-dash"></div>
+
+      <p>The chart panel appears above the writing area when Task 1 is selected. It gives you a visual
+      reference while writing your response.</p>
+
+      <div class="steps">
+        <div class="step">
+          <span class="step-num"></span>
+          <div class="step-body">
+            Choose a chart type: <strong>Bar</strong>, <strong>Line</strong>, <strong>Pie</strong>, or <strong>Donut</strong>.
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num"></span>
+          <div class="step-body">
+            Click <strong>Edit Data</strong> to open the data editor. Change the title, x-axis labels,
+            y-axis label, and series values. The chart updates live as you type.
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num"></span>
+          <div class="step-body">
+            Values in each series are entered as <strong>comma-separated numbers</strong>, one per x-axis label.
+            Example: <code>22, 23, 25, 26, 28, 29, 31, 32</code>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num"></span>
+          <div class="step-body">
+            Click <strong>+ Add Series</strong> to add a second data set (e.g. Men vs Women).
+            Click <strong>&#x2715;</strong> to remove a series.
+          </div>
+        </div>
+      </div>
+
+      <div class="note-box">
+        Tip: Load the built-in example (click "Load Example" in the analyzer panel) to see a fully
+        annotated Task 1 response with the matching chart and question pre-filled.
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Writing Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Special+Elite&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #e8e0d0;
+    --paper-dark: #d4c8b0;
+    --ink: #2a1f14;
+    --ink-light: #5a4a38;
+    --line: rgba(80, 100, 160, 0.35);
+    --margin: rgba(180, 60, 60, 0.7);
+    --accent: #1565c0;
+    --green: #388e3c;
+    --red: #e53935;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #b5a898;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px;
+    font-family: 'Courier Prime', monospace;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(100,80,60,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(80,60,40,0.2) 0%, transparent 50%);
+  }
+
+  .page-wrapper {
+    width: 100%;
+    max-width: 800px;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-family: 'Special Elite', cursive;
+    font-size: 2rem;
+    color: #f5efe6;
+    letter-spacing: 0.08em;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+  }
+  .header p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
+    color: rgba(245,239,230,0.75);
+    margin-top: 4px;
+  }
+
+  /* TASK TABS */
+  .task-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    justify-content: center;
+  }
+  .task-tab {
+    padding: 8px 28px;
+    border-radius: 4px 4px 0 0;
+    border: 1.5px solid rgba(200,180,150,0.5);
+    border-bottom: none;
+    background: rgba(180,160,130,0.3);
+    font-family: 'Special Elite', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: rgba(245,239,230,0.65);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .task-tab.active {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: rgba(140,110,70,0.6);
+  }
+  .task-tab:hover:not(.active) {
+    background: rgba(180,160,130,0.5);
+    color: rgba(245,239,230,0.9);
+  }
+
+  /* NOTEBOOK */
+  .notebook {
+    background: var(--paper);
+    border-radius: 2px 4px 4px 2px;
+    box-shadow:
+      -3px 0 0 #c8b89a,
+      4px 4px 0 #a89070,
+      6px 6px 0 #987860,
+      8px 8px 12px rgba(0,0,0,0.35),
+      inset 0 0 80px rgba(150,120,80,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .notebook::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+  .notebook::after {
+    content: '';
+    position: absolute;
+    left: 64px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--margin);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .lined-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 31px,
+      var(--line) 31px,
+      var(--line) 32px
+    );
+    background-position: 0 48px;
+  }
+
+  .notebook-inner {
+    position: relative;
+    z-index: 3;
+    padding: 20px 28px 20px 82px;
+  }
+
+  /* QUESTION PANEL */
+  .question-panel {
+    padding: 18px 28px 16px 82px;
+    position: relative;
+    z-index: 3;
+    border-bottom: 2px solid rgba(130,110,80,0.25);
+  }
+
+  .question-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .question-badge {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+  .question-badge.task2 {
+    background: #5a3e1b;
+  }
+
+  .question-counter {
+    font-family: 'Caveat', cursive;
+    font-size: 0.95rem;
+    color: var(--ink-light);
+    opacity: 0.7;
+  }
+
+  .question-text {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.97rem;
+    line-height: 1.65;
+    color: var(--ink);
+    font-style: italic;
+    border-left: 3px solid rgba(180,60,60,0.5);
+    padding-left: 14px;
+    margin-top: 4px;
+  }
+
+  /* WRITING AREA */
+  .write-label {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    opacity: 0.6;
+    margin-bottom: 6px;
+    padding-top: 14px;
+  }
+
+  .text-area {
+    min-height: 380px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 1rem;
+    line-height: 32px;
+    color: var(--ink);
+    outline: none;
+    caret-color: var(--ink);
+    word-break: break-word;
+    white-space: pre-wrap;
+    width: 100%;
+    border: none;
+    background: transparent;
+    resize: none;
+    padding-top: 4px;
+  }
+  .text-area::placeholder {
+    color: var(--ink-light);
+    opacity: 0.4;
+    font-style: italic;
+  }
+
+  /* META STRIP */
+  .meta-strip {
+    padding: 10px 28px 10px 82px;
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-top: 1px solid rgba(130,110,80,0.2);
+    flex-wrap: wrap;
+  }
+  .meta-strip span {
+    font-family: 'Caveat', cursive;
+    font-size: 0.88rem;
+    color: var(--ink-light);
+    opacity: 0.65;
+  }
+  .word-count-badge {
+    background: rgba(0,0,0,0.07);
+    border-radius: 10px;
+    padding: 1px 9px;
+    font-size: 0.8rem !important;
+    opacity: 1 !important;
+  }
+  .word-target {
+    opacity: 0.5 !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* NAV BAR — outside notebook */
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 0 2px;
+  }
+
+  .nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border: 1.5px solid rgba(200,185,160,0.6);
+    border-radius: 4px;
+    background: rgba(245,239,230,0.18);
+    font-family: 'Special Elite', cursive;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    color: #f0e8d8;
+    cursor: pointer;
+    transition: all 0.15s;
+    backdrop-filter: blur(2px);
+  }
+  .nav-btn:hover:not(:disabled) {
+    background: rgba(245,239,230,0.32);
+    color: #fff;
+    border-color: rgba(220,200,170,0.9);
+  }
+  .nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  /* ACTION PANEL — inside notebook bottom */
+  .action-panel {
+    padding: 14px 28px 18px 82px;
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    border-top: 1px dashed rgba(130,110,80,0.3);
+  }
+
+  .submit-btn {
+    padding: 7px 22px;
+    border: 1.5px solid var(--green);
+    border-radius: 3px;
+    background: rgba(56,142,60,0.12);
+    font-family: 'Special Elite', cursive;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--green);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-left: auto;
+  }
+  .submit-btn:hover {
+    background: rgba(56,142,60,0.22);
+  }
+  .submit-btn.loading {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .analyze-btn {
+    padding: 7px 18px;
+    border: 1.5px solid var(--accent);
+    border-radius: 3px;
+    background: rgba(21,101,192,0.1);
+    font-family: 'Special Elite', cursive;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .analyze-btn:hover {
+    background: rgba(21,101,192,0.2);
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-family: 'Caveat', cursive;
+    font-size: 1.05rem;
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.25s ease;
+    pointer-events: none;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .toast.success { background: var(--green); }
+  .toast.error   { background: var(--red); }
+
+  /* SUBMISSIONS PANEL */
+  .submissions-panel {
+    margin-top: 20px;
+    background: var(--paper);
+    border-radius: 4px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.2);
+    overflow: hidden;
+  }
+  .submissions-header {
+    padding: 14px 28px;
+    border-bottom: 1px solid rgba(130,110,80,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+  .submissions-header h2 {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+  }
+  .submissions-header span {
+    font-family: 'Caveat', cursive;
+    font-size: 0.9rem;
+    color: var(--ink-light);
+    opacity: 0.6;
+  }
+  .submissions-list {
+    display: none;
+    padding: 8px 0;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  .submissions-list.open { display: block; }
+  .submission-item {
+    padding: 12px 28px;
+    border-bottom: 1px dashed rgba(130,110,80,0.2);
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .submission-item:last-child { border-bottom: none; }
+  .submission-item:hover { background: rgba(0,0,0,0.03); }
+  .submission-q {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.82rem;
+    color: var(--ink);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .submission-meta {
+    font-family: 'Caveat', cursive;
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    opacity: 0.6;
+    display: flex;
+    gap: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="header">
+    <h1>IELTS Writing Practice</h1>
+    <p>Navigate questions, write your answer, then submit</p>
+  </div>
+
+  <!-- Task Tabs -->
+  <div class="task-tabs">
+    <button class="task-tab active" id="tab1" onclick="switchTask(1)">Task 1 — Charts & Graphs</button>
+    <button class="task-tab" id="tab2" onclick="switchTask(2)">Task 2 — Essays</button>
+  </div>
+
+  <!-- Navigation — fixed position outside the notebook -->
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="navigate(-1)" disabled>← Prev</button>
+    <button class="nav-btn" id="nextBtn" onclick="navigate(1)">Next →</button>
+  </div>
+
+  <div class="notebook">
+    <div class="lined-bg"></div>
+
+    <!-- Question panel -->
+    <div class="question-panel">
+      <div class="question-meta">
+        <span class="question-badge" id="taskBadge">Task 1</span>
+        <span class="question-counter" id="questionCounter">Question 1 of 30</span>
+      </div>
+      <div class="question-text" id="questionText">Loading...</div>
+    </div>
+
+    <!-- Writing area -->
+    <div class="notebook-inner">
+      <div class="write-label">✦ Your Answer</div>
+      <textarea
+        id="answerArea"
+        class="text-area"
+        placeholder="Write your answer here…"
+        spellcheck="true"
+      ></textarea>
+    </div>
+
+    <!-- Word count strip -->
+    <div class="meta-strip">
+      <span id="wordCount" class="word-count-badge">0 words</span>
+      <span id="wordTarget" class="word-target">Target: 150+ words</span>
+      <span id="charCount">0 chars</span>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="action-panel">
+      <button class="analyze-btn" onclick="openAnalyzer()">Analyze Writing</button>
+      <button class="submit-btn" id="submitBtn" onclick="submitAnswer()">Submit Answer</button>
+    </div>
+  </div>
+
+  <!-- Submissions history -->
+  <div class="submissions-panel">
+    <div class="submissions-header" onclick="toggleSubmissions()">
+      <h2>Submitted Answers</h2>
+      <span id="submissionsToggle">▼ Show</span>
+    </div>
+    <div class="submissions-list" id="submissionsList"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let questions = { task1: [], task2: [] };
+let currentTask = 1;
+let currentIndex = 0;
+let submissionsOpen = false;
+
+async function init() {
+  const res = await fetch('questions.json');
+  questions = await res.json();
+  renderQuestion();
+  loadSubmissions();
+}
+
+function currentList() {
+  return currentTask === 1 ? questions.task1 : questions.task2;
+}
+
+function currentQuestion() {
+  return currentList()[currentIndex];
+}
+
+function renderQuestion() {
+  const list = currentList();
+  const q = list[currentIndex];
+  if (!q) return;
+
+  document.getElementById('taskBadge').textContent = 'Task ' + currentTask;
+  document.getElementById('taskBadge').className = 'question-badge' + (currentTask === 2 ? ' task2' : '');
+  document.getElementById('questionCounter').textContent =
+    'Question ' + (currentIndex + 1) + ' of ' + list.length;
+  document.getElementById('questionText').textContent = q.question;
+  document.getElementById('prevBtn').disabled = currentIndex === 0;
+  document.getElementById('nextBtn').disabled = currentIndex === list.length - 1;
+  document.getElementById('wordTarget').textContent =
+    currentTask === 1 ? 'Target: 150+ words' : 'Target: 250+ words';
+
+  // Clear answer area
+  document.getElementById('answerArea').value = '';
+  updateWordCount();
+}
+
+function navigate(dir) {
+  const list = currentList();
+  const next = currentIndex + dir;
+  if (next < 0 || next >= list.length) return;
+  currentIndex = next;
+  renderQuestion();
+}
+
+function switchTask(task) {
+  currentTask = task;
+  currentIndex = 0;
+  document.getElementById('tab1').classList.toggle('active', task === 1);
+  document.getElementById('tab2').classList.toggle('active', task === 2);
+  renderQuestion();
+}
+
+function updateWordCount() {
+  const text = document.getElementById('answerArea').value;
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  document.getElementById('wordCount').textContent = words + ' words';
+  document.getElementById('charCount').textContent = text.length + ' chars';
+}
+
+document.getElementById('answerArea').addEventListener('input', updateWordCount);
+
+async function submitAnswer() {
+  const answer = document.getElementById('answerArea').value.trim();
+  if (!answer) {
+    showToast('Please write your answer before submitting.', 'error');
+    return;
+  }
+  const q = currentQuestion();
+  const btn = document.getElementById('submitBtn');
+  btn.classList.add('loading');
+  btn.textContent = 'Saving…';
+
+  try {
+    const res = await fetch('/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        questionId: q.id,
+        task: q.task,
+        question: q.question,
+        answer
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Answer saved!', 'success');
+      loadSubmissions();
+    } else {
+      showToast('Save failed: ' + (data.error || 'unknown error'), 'error');
+    }
+  } catch (e) {
+    showToast('Network error — could not save.', 'error');
+  } finally {
+    btn.classList.remove('loading');
+    btn.textContent = 'Submit Answer';
+  }
+}
+
+function openAnalyzer() {
+  const answer = document.getElementById('answerArea').value.trim();
+  if (!answer) {
+    showToast('Write something first, then analyze it.', 'error');
+    return;
+  }
+  // Store answer in sessionStorage and open analyzer
+  sessionStorage.setItem('analyzeText', answer);
+  sessionStorage.setItem('analyzeTask', currentTask === 1 ? 'task1' : 'task2');
+  window.open('text-analyzer.html', '_blank');
+}
+
+async function loadSubmissions() {
+  try {
+    const res = await fetch('/submissions');
+    const data = await res.json();
+    renderSubmissions(data.reverse());
+  } catch {}
+}
+
+function renderSubmissions(list) {
+  const container = document.getElementById('submissionsList');
+  if (!list.length) {
+    container.innerHTML = '<div style="padding:16px 28px; font-family:Caveat,cursive; color:var(--ink-light); opacity:0.5; font-size:0.95rem;">No submissions yet.</div>';
+    return;
+  }
+  container.innerHTML = list.map(s => `
+    <div class="submission-item" onclick="loadSubmission(${JSON.stringify(s).replace(/"/g, '&quot;')})">
+      <div class="submission-q">${escHtml(s.question)}</div>
+      <div class="submission-meta">
+        <span>Task ${s.task}</span>
+        <span>${wordCount(s.answer)} words</span>
+        <span>${formatDate(s.submittedAt)}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function loadSubmission(s) {
+  // Switch to correct task and find question
+  currentTask = s.task;
+  document.getElementById('tab1').classList.toggle('active', s.task === 1);
+  document.getElementById('tab2').classList.toggle('active', s.task === 2);
+
+  const list = currentList();
+  const idx = list.findIndex(q => q.id === s.questionId);
+  if (idx >= 0) currentIndex = idx;
+  renderQuestion();
+  document.getElementById('answerArea').value = s.answer;
+  updateWordCount();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleSubmissions() {
+  submissionsOpen = !submissionsOpen;
+  document.getElementById('submissionsList').classList.toggle('open', submissionsOpen);
+  document.getElementById('submissionsToggle').textContent = submissionsOpen ? '▲ Hide' : '▼ Show';
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function wordCount(text) {
+  return text.trim() ? text.trim().split(/\s+/).length : 0;
+}
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+}
+
+init();
+</script>
+</body>
+</html>
