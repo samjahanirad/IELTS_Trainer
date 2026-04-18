@@ -708,7 +708,7 @@
     border-color: rgba(130,110,80,0.65);
     background: rgba(130,110,80,0.05);
   }
-  @media (max-width: 540px) {
+  @media (max-width: 700px) {
     .notes-panel-body { grid-template-columns: 1fr; }
     .notes-divider { height: 1px; width: auto; }
   }
@@ -824,6 +824,9 @@
         <div class="notes-section-title">Keywords</div>
         <div class="notes-entries" id="keywordsEntries"></div>
         <button class="notes-add-btn" onclick="addNoteEntry('keywords')">+ Add keyword</button>
+        <div class="notes-section-title" style="margin-top:18px;">Collocations</div>
+        <div class="notes-entries" id="collocationEntries"></div>
+        <button class="notes-add-btn" onclick="addNoteEntry('collocation')">+ Add collocation</button>
       </div>
       <div class="notes-divider"></div>
       <div class="notes-section">
@@ -1000,17 +1003,19 @@ function notesKey(qid) { return 'ielts_notes_' + qid; }
 function loadNotes() {
   const q = currentQuestion();
   if (!q) return;
-  const saved = JSON.parse(localStorage.getItem(notesKey(q.id)) || '{"keywords":[],"lexical":[]}');
-  renderNoteEntries('keywords', saved.keywords);
-  renderNoteEntries('lexical',  saved.lexical);
+  const saved = JSON.parse(localStorage.getItem(notesKey(q.id)) || '{"keywords":[],"lexical":[],"collocation":[]}');
+  renderNoteEntries('keywords',    saved.keywords);
+  renderNoteEntries('lexical',     saved.lexical);
+  renderNoteEntries('collocation', saved.collocation || []);
 }
 
 function saveNotes() {
   const q = currentQuestion();
   if (!q) return;
-  const keywords = [...document.querySelectorAll('#keywordsEntries .note-input')].map(i => i.value);
-  const lexical  = [...document.querySelectorAll('#lexicalEntries  .note-input')].map(i => i.value);
-  localStorage.setItem(notesKey(q.id), JSON.stringify({ keywords, lexical }));
+  const keywords    = [...document.querySelectorAll('#keywordsEntries    .note-input')].map(i => i.value);
+  const lexical     = [...document.querySelectorAll('#lexicalEntries     .note-input')].map(i => i.value);
+  const collocation = [...document.querySelectorAll('#collocationEntries .note-input')].map(i => i.value);
+  localStorage.setItem(notesKey(q.id), JSON.stringify({ keywords, lexical, collocation }));
 }
 
 function renderNoteEntries(section, values) {
@@ -1038,7 +1043,9 @@ function appendNoteRow(container, section, value, color) {
   input.className = 'note-input';
   input.placeholder = section === 'keywords'
     ? 'e.g. fluctuate, marginally…'
-    : 'e.g. reached a peak, in contrast to…';
+    : section === 'lexical'
+      ? 'e.g. reached a peak, in contrast to…'
+      : 'e.g. strong argument, growing concern…';
   input.value = value || '';
   input.dataset.colorName = color.name;
   input.style.backgroundColor = color.bg;
