@@ -190,6 +190,34 @@
     margin-top: 4px;
   }
 
+  .answer-type-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .answer-type-tag {
+    padding: 4px 14px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(90,62,27,0.35);
+    background: transparent;
+    font-family: 'Caveat', cursive;
+    font-size: 0.9rem;
+    color: var(--ink-light);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .answer-type-tag:hover {
+    border-color: rgba(90,62,27,0.6);
+    background: rgba(90,62,27,0.07);
+  }
+  .answer-type-tag.selected {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
   /* WRITING AREA */
   .write-label {
     font-family: 'Special Elite', cursive;
@@ -361,6 +389,146 @@
   .toast.success { background: var(--green); }
   .toast.error   { background: var(--red); }
 
+  /* MODEL ANSWER PANEL */
+  .model-answer-panel {
+    margin-top: 16px;
+    background: var(--paper);
+    border-radius: 4px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.2);
+    overflow: hidden;
+  }
+  .model-answer-header {
+    padding: 14px 28px;
+    border-bottom: 1px solid rgba(130,110,80,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+  .model-answer-header h2 {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+  }
+  .model-answer-header span {
+    font-family: 'Caveat', cursive;
+    font-size: 0.9rem;
+    color: var(--ink-light);
+    opacity: 0.6;
+  }
+  .model-answer-body {
+    display: none;
+    padding: 20px 28px 20px 82px;
+  }
+  .model-answer-body.open { display: block; }
+  .model-answer-text {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.93rem;
+    line-height: 1.75;
+    color: var(--ink);
+    white-space: pre-wrap;
+  }
+  .model-answer-empty {
+    font-family: 'Caveat', cursive;
+    font-size: 0.95rem;
+    color: var(--ink-light);
+    opacity: 0.5;
+    font-style: italic;
+  }
+
+  /* ADD QUESTION PANEL */
+  .add-question-panel {
+    margin-top: 16px;
+    background: var(--paper);
+    border-radius: 4px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.2);
+    overflow: hidden;
+  }
+  .add-question-header {
+    padding: 14px 28px;
+    border-bottom: 1px solid rgba(130,110,80,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+  .add-question-header h2 {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+  }
+  .add-question-header span {
+    font-family: 'Caveat', cursive;
+    font-size: 0.9rem;
+    color: var(--ink-light);
+    opacity: 0.6;
+  }
+  .add-question-body {
+    display: none;
+    padding: 20px 28px 20px 28px;
+    gap: 12px;
+    flex-direction: column;
+  }
+  .add-question-body.open { display: flex; }
+  .add-q-label {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    opacity: 0.7;
+    margin-bottom: 4px;
+  }
+  .add-q-field {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid rgba(130,110,80,0.35);
+    border-radius: 3px;
+    background: rgba(255,255,255,0.5);
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.9rem;
+    color: var(--ink);
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.15s;
+  }
+  .add-q-field:focus { border-color: rgba(130,110,80,0.7); }
+  .add-q-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .add-q-select {
+    padding: 8px 12px;
+    border: 1.5px solid rgba(130,110,80,0.35);
+    border-radius: 3px;
+    background: rgba(255,255,255,0.5);
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.9rem;
+    color: var(--ink);
+    outline: none;
+  }
+  .add-q-submit {
+    padding: 8px 22px;
+    border: 1.5px solid var(--green);
+    border-radius: 3px;
+    background: rgba(56,142,60,0.12);
+    font-family: 'Special Elite', cursive;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--green);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-left: auto;
+  }
+  .add-q-submit:hover { background: rgba(56,142,60,0.22); }
+
   /* SUBMISSIONS PANEL */
   .submissions-panel {
     margin-top: 20px;
@@ -423,6 +591,127 @@
     display: flex;
     gap: 12px;
   }
+
+  /* ── VOCABULARY NOTES PANEL ─────────────────────── */
+  .notes-panel {
+    margin-top: 20px;
+    background: var(--paper);
+    border-radius: 4px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.2);
+    overflow: hidden;
+  }
+  .notes-panel-header {
+    padding: 14px 28px;
+    border-bottom: 1px solid rgba(130,110,80,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .notes-panel-title {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+  .notes-panel-hint {
+    font-family: 'Caveat', cursive;
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    opacity: 0.5;
+  }
+  .notes-panel-body {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+  }
+  .notes-divider {
+    background: rgba(130,110,80,0.2);
+  }
+  .notes-section {
+    padding: 16px 24px 18px;
+  }
+  .notes-section-title {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    padding-bottom: 5px;
+    border-bottom: 1.5px solid rgba(21,101,192,0.2);
+  }
+  .notes-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-height: 28px;
+    margin-bottom: 10px;
+  }
+  .note-entry {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .note-input {
+    flex: 1;
+    border-radius: 3px;
+    border-width: 1.5px;
+    border-style: solid;
+    padding: 5px 10px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.88rem;
+    color: var(--ink);
+    outline: none;
+    transition: filter 0.15s;
+  }
+  .note-input:focus {
+    filter: brightness(0.93);
+  }
+  .note-input::placeholder {
+    color: var(--ink-light);
+    opacity: 0.5;
+    font-style: italic;
+  }
+  .note-remove-btn {
+    background: none;
+    border: none;
+    color: var(--ink-light);
+    opacity: 0.35;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 2px 5px;
+    line-height: 1;
+    border-radius: 2px;
+    transition: all 0.12s;
+    flex-shrink: 0;
+  }
+  .note-remove-btn:hover {
+    opacity: 0.9;
+    color: var(--red);
+    background: rgba(229,57,53,0.07);
+  }
+  .notes-add-btn {
+    width: 100%;
+    background: none;
+    border: 1.5px dashed rgba(130,110,80,0.35);
+    border-radius: 3px;
+    padding: 5px 14px;
+    font-family: 'Caveat', cursive;
+    font-size: 0.92rem;
+    color: var(--ink-light);
+    opacity: 0.65;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .notes-add-btn:hover {
+    opacity: 1;
+    border-color: rgba(130,110,80,0.65);
+    background: rgba(130,110,80,0.05);
+  }
+  @media (max-width: 540px) {
+    .notes-panel-body { grid-template-columns: 1fr; }
+    .notes-divider { height: 1px; width: auto; }
+  }
 </style>
 </head>
 <body>
@@ -455,6 +744,12 @@
         <span class="question-counter" id="questionCounter">Question 1 of 30</span>
       </div>
       <div class="question-text" id="questionText">Loading...</div>
+      <div class="answer-type-tags">
+        <button class="answer-type-tag" data-type="instruction" onclick="selectAnswerType(this)">Instruction</button>
+        <button class="answer-type-tag" data-type="paragraph" onclick="selectAnswerType(this)">Paragraph</button>
+        <button class="answer-type-tag" data-type="conclusion" onclick="selectAnswerType(this)">Conclusion</button>
+        <button class="answer-type-tag" data-type="complete" onclick="selectAnswerType(this)">Complete</button>
+      </div>
     </div>
 
     <!-- Writing area -->
@@ -477,8 +772,65 @@
 
     <!-- Action buttons -->
     <div class="action-panel">
-      <button class="analyze-btn" onclick="openAnalyzer()">Analyze Writing</button>
       <button class="submit-btn" id="submitBtn" onclick="submitAnswer()">Submit Answer</button>
+    </div>
+  </div>
+
+  <!-- Model Answer Panel -->
+  <div class="model-answer-panel">
+    <div class="model-answer-header" onclick="toggleModelAnswer()">
+      <h2>Model Answer</h2>
+      <span id="modelAnswerToggle">▼ Show</span>
+    </div>
+    <div class="model-answer-body" id="modelAnswerBody"></div>
+  </div>
+
+  <!-- Add Question Panel -->
+  <div class="add-question-panel">
+    <div class="add-question-header" onclick="toggleAddQuestion()">
+      <h2>Add Question to Database</h2>
+      <span id="addQuestionToggle">▼ Expand</span>
+    </div>
+    <div class="add-question-body" id="addQuestionBody">
+      <div>
+        <div class="add-q-label">Task</div>
+        <div class="add-q-row">
+          <select class="add-q-select" id="addQTask">
+            <option value="1">Task 1 — Charts &amp; Graphs</option>
+            <option value="2">Task 2 — Essays</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <div class="add-q-label">Question</div>
+        <textarea class="add-q-field" id="addQQuestion" rows="3" placeholder="Paste the IELTS question here…"></textarea>
+      </div>
+      <div>
+        <div class="add-q-label">Model Answer (optional)</div>
+        <textarea class="add-q-field" id="addQAnswer" rows="6" placeholder="Paste or write a model answer…"></textarea>
+      </div>
+      <button class="add-q-submit" onclick="addQuestion()">Save to Database</button>
+    </div>
+  </div>
+
+  <!-- Vocabulary Notes Panel -->
+  <div class="notes-panel">
+    <div class="notes-panel-header">
+      <span class="notes-panel-title">Vocabulary Notes</span>
+      <span class="notes-panel-hint">Saved per question</span>
+    </div>
+    <div class="notes-panel-body">
+      <div class="notes-section">
+        <div class="notes-section-title">Keywords</div>
+        <div class="notes-entries" id="keywordsEntries"></div>
+        <button class="notes-add-btn" onclick="addNoteEntry('keywords')">+ Add keyword</button>
+      </div>
+      <div class="notes-divider"></div>
+      <div class="notes-section">
+        <div class="notes-section-title">Lexical Resource</div>
+        <div class="notes-entries" id="lexicalEntries"></div>
+        <button class="notes-add-btn" onclick="addNoteEntry('lexical')">+ Add phrase</button>
+      </div>
     </div>
   </div>
 
@@ -499,10 +851,32 @@ let questions = { task1: [], task2: [] };
 let currentTask = 1;
 let currentIndex = 0;
 let submissionsOpen = false;
+let modelAnswerOpen = false;
+let addQuestionOpen = false;
+let selectedAnswerType = null;
+
+function selectAnswerType(el) {
+  document.querySelectorAll('.answer-type-tag').forEach(t => t.classList.remove('selected'));
+  if (selectedAnswerType === el.dataset.type) {
+    selectedAnswerType = null;
+  } else {
+    el.classList.add('selected');
+    selectedAnswerType = el.dataset.type;
+  }
+}
 
 async function init() {
-  const res = await fetch('questions.json');
+  const res = await fetch('/questions');
   questions = await res.json();
+
+  // Restore last position
+  const savedTask = parseInt(localStorage.getItem('ielts_task')) || 1;
+  const savedIndex = parseInt(localStorage.getItem('ielts_index_' + savedTask)) || 0;
+  currentTask = savedTask;
+  currentIndex = Math.min(savedIndex, currentList().length - 1);
+  document.getElementById('tab1').classList.toggle('active', currentTask === 1);
+  document.getElementById('tab2').classList.toggle('active', currentTask === 2);
+
   renderQuestion();
   loadSubmissions();
 }
@@ -530,9 +904,13 @@ function renderQuestion() {
   document.getElementById('wordTarget').textContent =
     currentTask === 1 ? 'Target: 150+ words' : 'Target: 250+ words';
 
-  // Clear answer area
-  document.getElementById('answerArea').value = '';
+  // Restore saved answer for this question (or clear if none)
+  document.getElementById('answerArea').value = localStorage.getItem('ielts_answer_' + q.id) || '';
+  selectedAnswerType = null;
+  document.querySelectorAll('.answer-type-tag').forEach(t => t.classList.remove('selected'));
   updateWordCount();
+  loadNotes();
+  renderModelAnswer();
 }
 
 function navigate(dir) {
@@ -540,12 +918,14 @@ function navigate(dir) {
   const next = currentIndex + dir;
   if (next < 0 || next >= list.length) return;
   currentIndex = next;
+  localStorage.setItem('ielts_index_' + currentTask, currentIndex);
   renderQuestion();
 }
 
 function switchTask(task) {
   currentTask = task;
-  currentIndex = 0;
+  currentIndex = parseInt(localStorage.getItem('ielts_index_' + task)) || 0;
+  localStorage.setItem('ielts_task', currentTask);
   document.getElementById('tab1').classList.toggle('active', task === 1);
   document.getElementById('tab2').classList.toggle('active', task === 2);
   renderQuestion();
@@ -558,7 +938,11 @@ function updateWordCount() {
   document.getElementById('charCount').textContent = text.length + ' chars';
 }
 
-document.getElementById('answerArea').addEventListener('input', updateWordCount);
+document.getElementById('answerArea').addEventListener('input', () => {
+  updateWordCount();
+  const q = currentQuestion();
+  if (q) localStorage.setItem('ielts_answer_' + q.id, document.getElementById('answerArea').value);
+});
 
 async function submitAnswer() {
   const answer = document.getElementById('answerArea').value.trim();
@@ -579,7 +963,8 @@ async function submitAnswer() {
         questionId: q.id,
         task: q.task,
         question: q.question,
-        answer
+        answer,
+        answerType: selectedAnswerType
       })
     });
     const data = await res.json();
@@ -597,16 +982,135 @@ async function submitAnswer() {
   }
 }
 
-function openAnalyzer() {
-  const answer = document.getElementById('answerArea').value.trim();
-  if (!answer) {
-    showToast('Write something first, then analyze it.', 'error');
-    return;
+// ── VOCABULARY NOTES ────────────────────────────────
+const NOTE_COLORS = [
+  { bg: '#FFFACD', border: '#E6B800', name: 'yellow' },
+  { bg: '#FFE0EB', border: '#E91E8C', name: 'pink'   },
+  { bg: '#DCF0FF', border: '#1976D2', name: 'blue'   },
+  { bg: '#D6F5DF', border: '#2E7D32', name: 'green'  },
+];
+
+function pickColor(prevName) {
+  const pool = NOTE_COLORS.filter(c => c.name !== prevName);
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function notesKey(qid) { return 'ielts_notes_' + qid; }
+
+function loadNotes() {
+  const q = currentQuestion();
+  if (!q) return;
+  const saved = JSON.parse(localStorage.getItem(notesKey(q.id)) || '{"keywords":[],"lexical":[]}');
+  renderNoteEntries('keywords', saved.keywords);
+  renderNoteEntries('lexical',  saved.lexical);
+}
+
+function saveNotes() {
+  const q = currentQuestion();
+  if (!q) return;
+  const keywords = [...document.querySelectorAll('#keywordsEntries .note-input')].map(i => i.value);
+  const lexical  = [...document.querySelectorAll('#lexicalEntries  .note-input')].map(i => i.value);
+  localStorage.setItem(notesKey(q.id), JSON.stringify({ keywords, lexical }));
+}
+
+function renderNoteEntries(section, values) {
+  const container = document.getElementById(section + 'Entries');
+  container.innerHTML = '';
+  const list = values.length ? values : [''];
+  let prevName = null;
+  list.forEach(v => {
+    const color = pickColor(prevName);
+    prevName = color.name;
+    appendNoteRow(container, section, v, color);
+  });
+}
+
+function appendNoteRow(container, section, value, color) {
+  if (!color) {
+    const last = container.querySelector('.note-entry:last-child .note-input');
+    color = pickColor(last ? last.dataset.colorName : null);
   }
-  // Store answer in sessionStorage and open analyzer
-  sessionStorage.setItem('analyzeText', answer);
-  sessionStorage.setItem('analyzeTask', currentTask === 1 ? 'task1' : 'task2');
-  window.open('text-analyzer.html', '_blank');
+  const row = document.createElement('div');
+  row.className = 'note-entry';
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'note-input';
+  input.placeholder = section === 'keywords'
+    ? 'e.g. fluctuate, marginally…'
+    : 'e.g. reached a peak, in contrast to…';
+  input.value = value || '';
+  input.dataset.colorName = color.name;
+  input.style.backgroundColor = color.bg;
+  input.style.borderColor = color.border;
+  input.addEventListener('input', saveNotes);
+
+  const btn = document.createElement('button');
+  btn.className = 'note-remove-btn';
+  btn.textContent = '×';
+  btn.title = 'Remove';
+  btn.addEventListener('click', () => { row.remove(); saveNotes(); });
+
+  row.appendChild(input);
+  row.appendChild(btn);
+  container.appendChild(row);
+}
+
+function addNoteEntry(section) {
+  const container = document.getElementById(section + 'Entries');
+  appendNoteRow(container, section, '');
+  container.lastElementChild.querySelector('input').focus();
+  saveNotes();
+}
+
+function renderModelAnswer() {
+  const q = currentQuestion();
+  const body = document.getElementById('modelAnswerBody');
+  if (!q || !q.modelAnswer) {
+    body.innerHTML = '<div class="model-answer-empty">No model answer available for this question.</div>';
+  } else {
+    body.innerHTML = '<div class="model-answer-text">' + escHtml(q.modelAnswer) + '</div>';
+  }
+}
+
+function toggleModelAnswer() {
+  modelAnswerOpen = !modelAnswerOpen;
+  document.getElementById('modelAnswerBody').classList.toggle('open', modelAnswerOpen);
+  document.getElementById('modelAnswerToggle').textContent = modelAnswerOpen ? '▲ Hide' : '▼ Show';
+}
+
+function toggleAddQuestion() {
+  addQuestionOpen = !addQuestionOpen;
+  document.getElementById('addQuestionBody').classList.toggle('open', addQuestionOpen);
+  document.getElementById('addQuestionToggle').textContent = addQuestionOpen ? '▲ Collapse' : '▼ Expand';
+}
+
+async function addQuestion() {
+  const task = parseInt(document.getElementById('addQTask').value);
+  const question = document.getElementById('addQQuestion').value.trim();
+  const modelAnswer = document.getElementById('addQAnswer').value.trim();
+  if (!question) { showToast('Please enter a question.', 'error'); return; }
+
+  try {
+    const res = await fetch('/questions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ task, question, modelAnswer })
+    });
+    const data = await res.json();
+    if (data.success) {
+      // Reload questions from server
+      const qRes = await fetch('/questions');
+      questions = await qRes.json();
+      showToast(`Question saved! (${data.id}, total: ${data.total})`, 'success');
+      document.getElementById('addQQuestion').value = '';
+      document.getElementById('addQAnswer').value = '';
+    } else {
+      showToast('Save failed: ' + (data.error || 'unknown'), 'error');
+    }
+  } catch (e) {
+    showToast('Network error — could not save question.', 'error');
+  }
 }
 
 async function loadSubmissions() {

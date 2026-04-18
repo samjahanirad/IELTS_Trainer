@@ -4,7 +4,8 @@
   "description": "IELTS Writing Trainer with AI-powered annotation",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "save": "node scripts/save.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
